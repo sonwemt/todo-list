@@ -1,46 +1,58 @@
-import { ProjectController } from "./toDoProject";
+import ProjectController from "./toDoProject";
 import DisplayController from "./display";
 
 class PageController {
     #projects;
-    #DisplayController;
-    constructor () {
+    #displayController;
+    #firstRun = true;
+    constructor (name) {
         this.#projects = new ProjectController();
-        this.#DisplayController = new DisplayController();
+        this.#displayController = new DisplayController();
+        this.#addProject(name);
     }
 
-    addProject(name) {
-        this.#projects.newProject(name);
+    #updateProjectList () {
+        this.#displayController.updateProjects(this.#projects);
+        this.#configureEventListeners();
     }
 
-    updateProjects () {
-        this.#DisplayController.updateProjects(this.#projects);
+    #addProject(name) {
+        if(name === 'undefined'){
+            this.#projects.newProject();
+        }
+        else {
+            this.#projects.newProject(name);
+        }
+        this.#updateProjectList();
     }
 
-    get projectList () {
-        return this.#projects;
-    }
+    #configureEventListeners() {
+        const addButton = document.getElementById('addProject');
+        if(this.#firstRun){
+            
+            addButton.addEventListener('click', () => {
+                this.#addProject(prompt('Enter a name for your project'));
+            });
+            this.#firstRun = false;
+        }
+
+        const addItemButtons = document.querySelectorAll('.addTask');
+        addItemButtons.forEach((item) => {
+            item.addEventListener('click', (e) => {
+                console.log('HEOLOL');
+                this.#projects.getProject(e.target.id).addToDoItem('test', 'Descript', 'date', 'low');
+                this.#updateProjectList();
+            });
+        })
+
+    }    
 
 }
 
 const page = new PageController();
-let pageList = page.projectList;
-console.log(pageList.consoleLogProjects());
-let curPro = pageList.getProject(0);
-
-curPro.addToDoItem("todo1", "loremi psu msd", 1995, "top");
-curPro.addToDoItem("todolist2", "holesgs", 1995, "medium");
-curPro.addToDoItem("todo3", "hofafsdgdf", 1995, "low");
 
 
-let firstItemUpd = curPro.getToDoItem(0);
-console.log(firstItemUpd.consoleLogItems());
-
-page.addProject('test1');
-page.addProject('test5');
-page.addProject('test2');
 
 
-page.updateProjects();
 
 

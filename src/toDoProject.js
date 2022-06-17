@@ -21,6 +21,20 @@ class ToDoItem {
     get priority () {
         return this.#priority;
     }
+
+    set title(title) {
+        this.#title = title;
+    }
+    set description (description) {
+        this.#description = description;
+    }
+    set dueDate (dueDate) {
+        this.#dueDate = dueDate;
+    }
+    set priority (priority) {
+        this.#priority = priority;
+    }
+
     consoleLogItems () {
         console.log(this.#title + ' ' + this.#description + ' ' + this.#dueDate + ' ' + this.#priority)
     }
@@ -30,7 +44,7 @@ class ToDoItem {
 class ToDoProject {
     #projectName;
     #toDoItems = [];
-    constructor (projectName) {
+    constructor (projectName = 'Default Project') {
         this.#projectName = projectName;
     }
 
@@ -44,7 +58,10 @@ class ToDoProject {
     }
     
     getToDoItem (item) {
-        return this.#toDoItems[item];
+        if(item < this.#toDoItems.length && item > -1){
+            return this.#toDoItems[item];
+        }
+        return false;
     }
 
     getNumberOfItems () {
@@ -57,11 +74,8 @@ class ToDoProject {
 
 }
 
-class ProjectController {
+export default class ProjectController {
     #currentProjects = [];
-    constructor () {
-        this.newProject("default");  
-    }
     newProject (name) {
         let project = new ToDoProject(name);
         this.#currentProjects.push(project);
@@ -83,5 +97,3 @@ class ProjectController {
         }
     }
 }
-
-export {ToDoItem, ToDoProject, ProjectController};
