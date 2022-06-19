@@ -32,22 +32,35 @@ export default class DisplayController {
         for(let i = 0; i < projects.numberOfProjects;i++) {
 
             const card = document.createElement('div');
-            const button = document.createElement('button');
-            button.textContent = 'Add Task'; 
-            button.id = i;
-            button.classList.add('addTask');
+            card.classList.add(`project`);
+            card.id = i;
+            const addButton = document.createElement('button');
+            addButton.textContent = 'Add Task'; 
+            addButton.id = i;
+            addButton.classList.add('addTask');
+            const cardContent = document.createElement('div');
             const projectInfo = projects.getProject(i);
             const projectName = document.createElement('div');
             projectName.textContent = projectInfo.name;
             card.appendChild(projectName);
             
+            cardContent.id = i;
+            cardContent.classList.add('items');
     
             for(let x = 0; x < projectInfo.getNumberOfItems(); x++) {
                 const item = document.createElement('div');
                 item.textContent = `Title: ${projectInfo.getToDoItem(x).title}`;
-                card.appendChild(item);
+                cardContent.appendChild(item);
+
+                const removeItem = document.createElement('button');
+                removeItem.textContent = 'Remove';
+                removeItem.classList.add(`removeItem`);
+                removeItem.id = x;
+                cardContent.appendChild(removeItem);
+
             }
-            card.appendChild(button);
+            card.appendChild(addButton);
+            card.appendChild(cardContent);
             wrapper.appendChild(card);
         }
     }

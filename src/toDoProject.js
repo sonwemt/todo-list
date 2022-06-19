@@ -56,6 +56,12 @@ class ToDoProject {
     addToDoItem (title, description, dueDate, priority) {
         this.#toDoItems.push(new ToDoItem(title, description, dueDate, priority));
     }
+
+    removeToDoItem (index) {
+        if(this.containsToDoItem()){
+            this.#toDoItems.splice(index, 1);
+        }
+    }
     
     getToDoItem (item) {
         if(item < this.#toDoItems.length && item > -1){

@@ -2,29 +2,35 @@ import ProjectController from "./toDoProject";
 import DisplayController from "./display";
 
 class PageController {
-    #projects;
+    #projectController;
     #displayController;
     #firstRun = true;
     constructor (name) {
-        this.#projects = new ProjectController();
+        this.#projectController = new ProjectController();
         this.#displayController = new DisplayController();
         this.#addProject(name);
     }
 
     #updateProjectList () {
-        this.#displayController.updateProjects(this.#projects);
+        this.#displayController.updateProjects(this.#projectController);
         this.#configureEventListeners();
     }
 
     #addProject(name) {
         if(name === 'undefined'){
-            this.#projects.newProject();
+            this.#projectController.newProject();
         }
         else {
-            this.#projects.newProject(name);
+            this.#projectController.newProject(name);
         }
         this.#updateProjectList();
     }
+
+    removeToDoItem(project, item) {
+        this.#projectController.getProject(project).removeToDoItem(item);
+        this.#updateProjectList();
+    }
+
 
     #configureEventListeners() {
         const addButton = document.getElementById('addProject');
@@ -40,11 +46,20 @@ class PageController {
         addItemButtons.forEach((item) => {
             item.addEventListener('click', (e) => {
                 console.log('HEOLOL');
-                this.#projects.getProject(e.target.id).addToDoItem('test', 'Descript', 'date', 'low');
+                let project = this.#projectController.getProject(e.target.id);
+                project.addToDoItem(`test${project.getNumberOfItems()}`, 'Descript', 'date', 'low');
                 this.#updateProjectList();
             });
         })
 
+        const removeItemButtons = document.querySelectorAll('.removeItem');
+        removeItemButtons.forEach((item) => {
+            item.addEventListener('click', (e) => {
+                let project = this.#projectController.getProject(e.target.parentElement.id);
+                project.removeToDoItem(e.target.id);
+                this.#updateProjectList();
+            })
+        });
     }    
 
 }
