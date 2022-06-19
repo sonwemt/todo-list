@@ -47,7 +47,7 @@ export default class DisplayController {
             cardContent.id = i;
             cardContent.classList.add('items');
     
-            for(let x = 0; x < projectInfo.getNumberOfItems(); x++) {
+            for(let x = 0; x < projectInfo.NumberOfItems; x++) {
                 const item = document.createElement('div');
                 item.textContent = `Title: ${projectInfo.getToDoItem(x).title}`;
                 cardContent.appendChild(item);

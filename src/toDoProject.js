@@ -51,6 +51,10 @@ class ToDoProject {
     get name() {
         return this.#projectName;
     }
+
+    get NumberOfItems () {
+        return this.#toDoItems.length;
+    }
     
 
     addToDoItem (title, description, dueDate, priority) {
@@ -70,9 +74,6 @@ class ToDoProject {
         return false;
     }
 
-    getNumberOfItems () {
-        return this.#toDoItems.length;
-    }
 
     containsToDoItem () {
         return this.#toDoItems.length > 0;
@@ -82,13 +83,15 @@ class ToDoProject {
 
 export default class ProjectController {
     #currentProjects = [];
-    newProject (name) {
-        let project = new ToDoProject(name);
-        this.#currentProjects.push(project);
-    }
 
     get numberOfProjects () {
         return this.#currentProjects.length;
+    }
+
+
+    newProject (name) {
+        let project = new ToDoProject(name);
+        this.#currentProjects.push(project);
     }
 
     getProject (project) {

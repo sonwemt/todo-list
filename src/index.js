@@ -47,7 +47,7 @@ class PageController {
             item.addEventListener('click', (e) => {
                 console.log('HEOLOL');
                 let project = this.#projectController.getProject(e.target.id);
-                project.addToDoItem(`test${project.getNumberOfItems()}`, 'Descript', 'date', 'low');
+                project.addToDoItem(`test${project.NumberOfItems}`, 'Descript', 'date', 'low');
                 this.#updateProjectList();
             });
         })
