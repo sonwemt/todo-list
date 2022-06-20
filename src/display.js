@@ -43,7 +43,6 @@ export default class DisplayController {
             
             const cardContent = document.createElement('div');
             cardContent.classList.add('items');
-            cardContent.id = i;
 
             const projectInfo = projects.getProject(i);
             const projectName = document.createElement('div');
