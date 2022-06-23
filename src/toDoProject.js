@@ -94,8 +94,15 @@ export default class ProjectController {
         this.#currentProjects.push(project);
     }
 
-    getProject (project) {
-        return this.#currentProjects[project];
+    getProject (projectIndex) {
+        return this.#currentProjects[projectIndex];
+    }
+
+    removeProject(projectIndex) {
+        if(projectIndex > 0){ //Default project should not be removable
+            this.#currentProjects.splice(projectIndex, 1);
+            console.log(`Remove project ${projectIndex}`);
+        }
     }
 
     consoleLogProjects() {
