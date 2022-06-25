@@ -169,10 +169,8 @@ export default class ProjectController {
     }
 
     removeProject(projectIndex) {
-        if(projectIndex > 0){ //Default project should not be removable
-            this.#currentProjects.splice(projectIndex, 1);
-            console.log(`Remove project ${projectIndex}`);
-        }
+        this.#currentProjects.splice(projectIndex, 1);
+        this.#updateLocalStorage();
     }
 
     consoleLogProjects() {
