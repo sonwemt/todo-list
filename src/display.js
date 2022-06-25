@@ -72,7 +72,7 @@ export default class DisplayController {
                 const removeItem = document.createElement('button');
                 removeItem.textContent = 'Remove';
                 removeItem.classList.add(`removeItem`);
-                removeItem.setAttribute('data-id', i);
+                removeItem.setAttribute('data-id', x);
 
                 cardContent.appendChild(removeItem);
 
