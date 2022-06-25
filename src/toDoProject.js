@@ -39,7 +39,12 @@ class ToDoItem {
         console.log(this.#title + ' ' + this.#description + ' ' + this.#dueDate + ' ' + this.#priority)
     }
 
+    get toJson () {
+        return {title: this.#title, description: this.#description, dueDate: this.#dueDate, priority: this.#priority};
+    }
+
 }
+
 
 class ToDoProject {
     #projectName;
@@ -55,6 +60,16 @@ class ToDoProject {
     get NumberOfItems () {
         return this.#toDoItems.length;
     }
+
+    get toJson () {
+        let stringedItems = [];
+        for(let item of this.#toDoItems) {
+            stringedItems.push(item.toJson);
+        }
+        return {projectName: this.#projectName, toDoItems: stringedItems};
+    }
+
+
     
 
     addToDoItem (title, description, dueDate, priority) {
@@ -83,19 +98,74 @@ class ToDoProject {
 
 export default class ProjectController {
     #currentProjects = [];
-
+    constructor () {
+        this.#updateLocalStorage(true);
+    }
     get numberOfProjects () {
         return this.#currentProjects.length;
     }
+    get toJson () {
+        let stringedArray = [];
+        for(let project of this.#currentProjects) {
+            stringedArray.push(project.toJson);
+        }
+        return JSON.stringify(stringedArray);
+    }
 
+    fromJson(json) {
+        let data = JSON.parse(json);
+        let returnArray = [];
+        for(let project of data) {
+            let newProject = new ToDoProject(project.projectName);
+            for(let item of project.toDoItems) {
+                newProject.addToDoItem(item.title, item.description, item.dueDate, item.priority);
+            }
+            returnArray.push(newProject);
+        }
+        return returnArray;
+    }
+
+    #updateLocalStorage(firstRun = false) {
+        if(firstRun){
+            if(localStorage.getItem('currentProjects') === null) {
+                console.log('if');
+                let jsonArray = JSON.stringify(this.#currentProjects);
+                localStorage.setItem('currentProjects', jsonArray);
+            }
+            else{
+                console.log('else');
+                let storedArray = localStorage.getItem('currentProjects');
+                let parseIt = this.fromJson(storedArray);
+                this.#currentProjects = parseIt;
+            }
+        }
+        else {
+            console.log('elseif')
+            let jsonArray = this.toJson;
+            localStorage.setItem('currentProjects', jsonArray);
+        }
+    }
+
+    
 
     newProject (name) {
         let project = new ToDoProject(name);
         this.#currentProjects.push(project);
+        this.#updateLocalStorage();
     }
 
     getProject (projectIndex) {
         return this.#currentProjects[projectIndex];
+    }
+    
+    addToDoItem(project, title, description, dueDate, priority){
+        this.#currentProjects[project].addToDoItem(title, description, dueDate, priority);
+        this.#updateLocalStorage();
+    }
+
+    removeToDoItem(projectIndex, item) {
+        this.#currentProjects[projectIndex].removeToDoItem(item);
+        this.#updateLocalStorage();
     }
 
     removeProject(projectIndex) {

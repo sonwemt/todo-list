@@ -9,8 +9,8 @@ class PageController {
     constructor (name) {
         this.#projectController = new ProjectController();
         this.#displayController = new DisplayController();
-        this.#addProject(name);
         this.addProjectAddListener();
+        this.#updateProjectList();
     }
 
 
@@ -37,8 +37,12 @@ class PageController {
         this.#updateProjectList();
     }
 
-    #removeToDoItem(project, item) {
-        this.#projectController.getProject(project).removeToDoItem(item);
+    #addToDoItem(project, title, description, dueDate, priority) {
+        this.#projectController.addToDoItem(project, title, description, dueDate, priority);
+    }
+
+    #removeToDoItem(projectIndex, item) {
+        this.#projectController.removeToDoItem(projectIndex, item);
         this.#updateProjectList();
     }
 
@@ -69,6 +73,7 @@ class PageController {
             this.#displayController.removeProjectForm();
             this.#projectFormActive = false;
             this.#updateProjectList();
+            console.log(this.#projectController.consoleLogProjects());
         });
     }
             
@@ -88,17 +93,19 @@ class PageController {
         addItemButtons.forEach((item) => {
             item.addEventListener('click', (e) => {
                 if(document.getElementById('addItemOverlay') === null){
-                    let project = this.#projectController.getProject(e.target.getAttribute('data-id'));
-                    this.#displayController.createToDoItemForm(e.target.getAttribute('data-id'));
+                    let projectIndex = e.target.getAttribute('data-id');
+                    this.#displayController.createToDoItemForm(projectIndex);
                     
                     const overlay = document.getElementById('addItemOverlay');
 
                     let submitButton = document.getElementById('submitToDoItem');
                     submitButton.addEventListener('click', () => {
                         console.log()
-                        project.addToDoItem(itemTitle.value, itemDescription.value, itemDate.value, itemPriority.value);
+                        this.#addToDoItem(projectIndex, itemTitle.value, itemDescription.value, itemDate.value, itemPriority.value);
                         this.#updateProjectList();
                         overlay.remove();
+                        console.log(this.#projectController.toJson);
+
                     });
                     
                     window.addEventListener('keydown', function escapeHit(e) {
