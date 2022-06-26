@@ -6,7 +6,7 @@ class PageController {
     #projectController;
     #displayController; 
     #projectFormActive = false;
-    constructor (name) {
+    constructor () {
         this.#projectController = new ProjectController();
         this.#displayController = new DisplayController();
         this.addProjectAddListener();
@@ -75,7 +75,7 @@ class PageController {
         const removeProjectButtons = document.querySelectorAll('.removeProject');
         removeProjectButtons.forEach((item) => {
             item.addEventListener('click', (e) => {
-                console.log(`removeButtonCLicked${e.target.getAttribute('data-id')}`);
+                console.log(`removeButtonClicked${e.target.getAttribute('data-id')}`);
                 this.#removeProject(e.target.getAttribute('data-id'));
                 this.#updateProjectList();
             });
@@ -94,12 +94,9 @@ class PageController {
 
                     let submitButton = document.getElementById('submitToDoItem');
                     submitButton.addEventListener('click', () => {
-                        console.log()
                         this.#addToDoItem(projectIndex, itemTitle.value, itemDescription.value, itemDate.value, itemPriority.value);
                         this.#updateProjectList();
                         overlay.remove();
-                        console.log(this.#projectController.toJson);
-
                     });
                     
                     window.addEventListener('keydown', function escapeHit(e) {
@@ -132,7 +129,6 @@ class PageController {
             })
         });
     }
-
 }
 
 const page = new PageController();
