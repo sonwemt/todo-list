@@ -97,9 +97,15 @@ class ToDoProject {
 }
 
 export default class ProjectController {
-    #currentProjects = [];
+    #currentProjects = [new ToDoProject()];
     constructor () {
-        this.#updateLocalStorage(true);
+        if(!localStorage.getItem('currentProjects')){
+            this.#updateLocalStorage();
+        }
+        else{
+            this.#setLocalStorage();
+        }
+        
     }
     get numberOfProjects () {
         return this.#currentProjects.length;
@@ -125,25 +131,19 @@ export default class ProjectController {
         return returnArray;
     }
 
-    #updateLocalStorage(firstRun = false) {
-        if(firstRun){
-            if(localStorage.getItem('currentProjects') === null) {
-                console.log('if');
-                let jsonArray = JSON.stringify(this.#currentProjects);
-                localStorage.setItem('currentProjects', jsonArray);
-            }
-            else{
-                console.log('else');
-                let storedArray = localStorage.getItem('currentProjects');
-                let parseIt = this.fromJson(storedArray);
-                this.#currentProjects = parseIt;
-            }
-        }
-        else {
-            console.log('elseif')
-            let jsonArray = this.toJson;
-            localStorage.setItem('currentProjects', jsonArray);
-        }
+
+
+    #updateLocalStorage() {
+        console.log('if');
+        let jsonArray = this.toJson;
+        localStorage.setItem('currentProjects', jsonArray);
+    }
+
+    #setLocalStorage () {
+        let storedArray = localStorage.getItem('currentProjects');
+        let parsedArray = this.fromJson(storedArray);
+        this.#currentProjects = parsedArray;
+        this.#updateLocalStorage();
     }
 
     

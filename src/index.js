@@ -23,12 +23,7 @@ class PageController {
     }
 
     #addProject(name) {
-        if(name === 'undefined'){
-            this.#projectController.newProject();
-        }
-        else {
-            this.#projectController.newProject(name);
-        }
+        this.#projectController.newProject(name);
         this.#updateProjectList();
     }
 
