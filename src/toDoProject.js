@@ -35,10 +35,6 @@ class ToDoItem {
         this.#priority = priority;
     }
 
-    consoleLogItems () {
-        console.log(this.#title + ' ' + this.#description + ' ' + this.#dueDate + ' ' + this.#priority)
-    }
-
     get toJson () {
         return {title: this.#title, description: this.#description, dueDate: this.#dueDate, priority: this.#priority};
     }
@@ -62,11 +58,11 @@ class ToDoProject {
     }
 
     get toJson () {
-        let stringedItems = [];
+        let jsonReadyItems = [];
         for(let item of this.#toDoItems) {
-            stringedItems.push(item.toJson);
+            jsonReadyItems.push(item.toJson);
         }
-        return {projectName: this.#projectName, toDoItems: stringedItems};
+        return {projectName: this.#projectName, toDoItems: jsonReadyItems};
     }
 
 
@@ -107,10 +103,12 @@ export default class ProjectController {
         }
         
     }
+    
     get numberOfProjects () {
         return this.#currentProjects.length;
     }
-    get toJson () {
+
+    #toJson () {
         let stringedArray = [];
         for(let project of this.#currentProjects) {
             stringedArray.push(project.toJson);
@@ -118,7 +116,7 @@ export default class ProjectController {
         return JSON.stringify(stringedArray);
     }
 
-    fromJson(json) {
+    #fromJson(json) {
         let data = JSON.parse(json);
         let returnArray = [];
         for(let project of data) {
@@ -131,17 +129,15 @@ export default class ProjectController {
         return returnArray;
     }
 
-
-
     #updateLocalStorage() {
         console.log('if');
-        let jsonArray = this.toJson;
+        let jsonArray = this.#toJson();
         localStorage.setItem('currentProjects', jsonArray);
     }
 
     #setLocalStorage () {
         let storedArray = localStorage.getItem('currentProjects');
-        let parsedArray = this.fromJson(storedArray);
+        let parsedArray = this.#fromJson(storedArray);
         this.#currentProjects = parsedArray;
         this.#updateLocalStorage();
     }
@@ -171,13 +167,5 @@ export default class ProjectController {
     removeProject(projectIndex) {
         this.#currentProjects.splice(projectIndex, 1);
         this.#updateLocalStorage();
-    }
-
-    consoleLogProjects() {
-        if(this.#currentProjects.length) {
-            for(let project of this.#currentProjects) {
-                console.log(project);
-            }
-        }
     }
 }

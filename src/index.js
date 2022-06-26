@@ -68,7 +68,6 @@ class PageController {
             this.#displayController.removeProjectForm();
             this.#projectFormActive = false;
             this.#updateProjectList();
-            console.log(this.#projectController.consoleLogProjects());
         });
     }
             
@@ -133,7 +132,6 @@ class PageController {
             })
         });
     }
-    
 
 }
 
