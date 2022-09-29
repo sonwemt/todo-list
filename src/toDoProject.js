@@ -96,7 +96,9 @@ class ToDoProject {
 
 class ProjectController {
     #currentProjects = [new ToDoProject()];
-    constructor () {
+    #database;
+    constructor (database) {
+        this.#database = database;
         if(!localStorage.getItem('currentProjects')){
             this.#updateLocalStorage();
         } else{

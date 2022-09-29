@@ -1,17 +1,34 @@
 import { ProjectController } from "./toDoProject";
 import { DisplayController } from "./display";
 import "./style.css";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from 'firebase/firestore';
+// Import the functions you need from the SDKs you need
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBsw_hCHfJQ8X9zCl9s7Pf2y0GAeeTOve0",
+  authDomain: "to-do-list-a557a.firebaseapp.com",
+  projectId: "to-do-list-a557a",
+  storageBucket: "to-do-list-a557a.appspot.com",
+  messagingSenderId: "1098174021586",
+  appId: "1:1098174021586:web:1fc93593b36947c198920b"
+};
+
+
 
 class PageController {
     #projectController;
     #displayController; 
     #projectFormActive = false;
-    constructor () {
-        this.#projectController = new ProjectController();
+    constructor (database) {
+        this.#projectController = new ProjectController(database);
         this.#displayController = new DisplayController();
         this.addProjectAddListener();
         this.#updateProjectList();
     }
+
+
 
     #updateProjectList () {
         this.#displayController.updateProjects(this.#projectController);
@@ -127,7 +144,11 @@ class PageController {
     }
 }
 
-const page = new PageController();
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const page = new PageController(db);
 
 
 
