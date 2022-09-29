@@ -1,4 +1,4 @@
-export default class DisplayController {
+class DisplayController {
     constructor() {
         this.#createPageBody();
     }
@@ -186,3 +186,5 @@ export default class DisplayController {
     
 
 }
+
+export { DisplayController };

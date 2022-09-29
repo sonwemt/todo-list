@@ -1,5 +1,5 @@
-import ProjectController from "./toDoProject";
-import DisplayController from "./display";
+import { ProjectController } from "./toDoProject";
+import { DisplayController } from "./display";
 import "./style.css";
 
 class PageController {
@@ -12,8 +12,6 @@ class PageController {
         this.addProjectAddListener();
         this.#updateProjectList();
     }
-
-
 
     #updateProjectList () {
         this.#displayController.updateProjects(this.#projectController);
@@ -50,8 +48,7 @@ class PageController {
                 this.#displayController.createProjectForm();
                 this.#projectFormActive = true;
                 this.addProjectSubmitListener();
-            }
-            else {
+            } else {
                 console.log('addprojectelse');
                 this.#displayController.removeProjectForm();
                 this.#projectFormActive = false;
@@ -112,7 +109,6 @@ class PageController {
                     closeOverlay.textContent = 'X';
                     closeOverlay.addEventListener('click', () => {overlay.remove();});
                     overlay.appendChild(closeOverlay);
-
                 }
             });
         });

@@ -92,19 +92,16 @@ class ToDoProject {
     containsToDoItem () {
         return this.#toDoItems.length > 0;
     }
-
 }
 
-export default class ProjectController {
+class ProjectController {
     #currentProjects = [new ToDoProject()];
     constructor () {
         if(!localStorage.getItem('currentProjects')){
             this.#updateLocalStorage();
-        }
-        else{
+        } else{
             this.#getLocalStorage();
-        }
-        
+        }   
     }
     
     get numberOfProjects () {
@@ -167,3 +164,5 @@ export default class ProjectController {
         this.#updateLocalStorage();
     }
 }
+
+export { ProjectController };
