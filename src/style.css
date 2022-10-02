@@ -39,6 +39,14 @@ input focus:hover {
     gap:2rem;
     padding: 2rem;
 }
+
+#loading {
+    display: grid;
+    justify-self:center;
+    text-align: center;
+    font-size: 3rem;
+}
+
 .project {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;

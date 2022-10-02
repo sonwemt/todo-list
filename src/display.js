@@ -21,7 +21,12 @@ class DisplayController {
         addButton.textContent = ('New Project');
         addButton.id = 'addProjectButton';
         buttonWrapper.appendChild(addButton);
-        
+
+        const loading = document.createElement('div');
+        loading.textContent = 'Fetching data from backend';
+        loading.id = 'loading';
+
+        projectBody.appendChild(loading);
         
         wrapper.appendChild(header);
         wrapper.appendChild(buttonWrapper);
