@@ -34,6 +34,17 @@ class DisplayController {
         
     }
 
+    displayFetchError(e) {
+        const wrapper = document.getElementById('projectBody');
+        this.#clearWrapper(wrapper);
+        const errorText = document.createElement('h2');
+        errorText.textContent = 'Error fetching from database: ';
+        const errorInfo = document.createElement('h2');
+        errorInfo.textContent = `${e}`
+        wrapper.appendChild(errorText);
+        wrapper.appendChild(errorInfo);
+    }
+
     updateProjects(projects) {
         const wrapper = document.getElementById('projectBody');
 

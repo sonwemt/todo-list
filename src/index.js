@@ -29,8 +29,12 @@ class PageController {
     }
 
     async initialLoad() {
-        await this.#projectController.initpromise;
-        this.#updateProjectList();
+        try {
+            await this.#projectController.initpromise;
+            this.#updateProjectList();
+        } catch (e) {
+            this.#displayController.displayFetchError(e);
+        }
     }
 
     #updateProjectList () {
