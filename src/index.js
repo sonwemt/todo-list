@@ -25,10 +25,13 @@ class PageController {
         this.#projectController = new ProjectController(database);
         this.#displayController = new DisplayController();
         this.addProjectAddListener();
-        this.#updateProjectList();
+        this.initialLoad();
     }
 
-
+    async initialLoad() {
+        await this.#projectController.initpromise;
+        this.#updateProjectList();
+    }
 
     #updateProjectList () {
         this.#displayController.updateProjects(this.#projectController);

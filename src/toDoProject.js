@@ -1,3 +1,5 @@
+import { collection, getDoc, setDoc, doc } from 'firebase/firestore';
+
 class ToDoItem {
     #title;
     #description;
@@ -97,20 +99,56 @@ class ToDoProject {
 class ProjectController {
     #currentProjects = [new ToDoProject()];
     #database;
+    initpromise;
     constructor (database) {
         this.#database = database;
-        if(!localStorage.getItem('currentProjects')){
+        this.initpromise = this.checkFirestore();
+       /*  if(!localStorage.getItem('currentProjects')){
             this.#updateLocalStorage();
-        } else{
+        } else {
             this.#getLocalStorage();
-        }   
+        }    */
     }
     
     get numberOfProjects () {
         return this.#currentProjects.length;
     }
 
-    #toJson () {
+    async checkFirestore() {
+        const docRef = collection(this.#database, 'lists');
+        const docSnap = await getDoc(doc(docRef, 'projects'))
+        if(!docSnap.exists()) {
+            await this.#updateDoc();
+        } else {
+            await this.#getDoc();
+        }
+    }
+
+    async #updateDoc() {
+        try {
+            const projectList = this.#toJson();
+            const colRef = collection(this.#database, 'lists');
+            const docref = await setDoc((doc(colRef, 'projects')), {
+                projectList: projectList,
+            });
+        } catch (e) {
+            console.error('Error adding projectList', e);
+        }
+    }
+
+    async #getDoc() {
+        try {
+            const colRef = collection(this.#database, 'lists');
+            let storedArray = await getDoc(doc(colRef, 'projects'));
+            let parsedArray = this.#fromJson(storedArray.data().projectList);
+            this.#currentProjects = parsedArray;
+            this.#updateDoc();
+        } catch (e) {
+            console.error('Error fetching document', e);
+        }
+    }
+
+    #toJson() {
         let stringedArray = [];
         for(let project of this.#currentProjects) {
             stringedArray.push(project.toJson);
@@ -129,7 +167,7 @@ class ProjectController {
         return returnArray;
     }
 
-    #updateLocalStorage() {
+  /*   #updateLocalStorage() {
         let jsonArray = this.#toJson();
         localStorage.setItem('currentProjects', jsonArray);
     }
@@ -139,12 +177,13 @@ class ProjectController {
         let parsedArray = this.#fromJson(storedArray);
         this.#currentProjects = parsedArray;
         this.#updateLocalStorage();
-    }
+    } */
 
     newProject (name) {
         let project = new ToDoProject(name);
         this.#currentProjects.push(project);
-        this.#updateLocalStorage();
+        this.#updateDoc();
+        // this.#updateLocalStorage();
     }
 
     getProject (projectIndex) {
@@ -153,17 +192,20 @@ class ProjectController {
     
     addToDoItem(project, title, description, dueDate, priority){
         this.#currentProjects[project].addToDoItem(title, description, dueDate, priority);
-        this.#updateLocalStorage();
+        this.#updateDoc();
+        // this.#updateLocalStorage();
     }
 
     removeToDoItem(projectIndex, item) {
         this.#currentProjects[projectIndex].removeToDoItem(item);
-        this.#updateLocalStorage();
+        this.#updateDoc();
+        // this.#updateLocalStorage();
     }
 
     removeProject(projectIndex) {
         this.#currentProjects.splice(projectIndex, 1);
-        this.#updateLocalStorage();
+        this.#updateDoc();
+        // this.#updateLocalStorage();
     }
 }
 
