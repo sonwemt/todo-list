@@ -20,6 +20,7 @@ class DisplayController {
         buttonWrapper.id = 'addProject';
         addButton.textContent = ('New Project');
         addButton.id = 'addProjectButton';
+        addButton.disabled = true;
         buttonWrapper.appendChild(addButton);
 
         const loading = document.createElement('div');
@@ -47,6 +48,9 @@ class DisplayController {
 
     updateProjects(projects) {
         const wrapper = document.getElementById('projectBody');
+
+        const addButton = document.getElementById('addProjectButton');
+        addButton.disabled = false;
 
         this.#clearWrapper(wrapper);
 
@@ -98,6 +102,7 @@ class DisplayController {
             wrapper.appendChild(card);
         }
     }
+
     #clearWrapper (wrapper) {
         while(wrapper.firstChild) {
             wrapper.removeChild(wrapper.lastChild);
